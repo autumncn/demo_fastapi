@@ -2,21 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+    <title>Items</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-<!--     <form method="post" action="/apply_strategy">-->
-<!--        <select name="strategy_id">-->
-<!--            {% for strategy in strategies %}-->
-<!--                <option value="{{ strategy.id }}">{{ strategy.name }}</option>-->
-<!--            {% endfor %}-->
-<!--        </select>-->
-<!--        <input type="hidden" name="stock_id" value="{{ stock.id }}" />-->
-<!--        <input type="submit" value="Apply Strategy" />-->
-<!--    </form>-->
+    <div class="text">
+        <form action="/items/create" enctype="application/x-www-form-urlencoded" method="POST">
+            <div class="mb-3">
+                <label>Title</label>
+                <input class="form-control" name="set_title" id="title" placeholder="name@example.com">
+            </div>
+            <div class="mb-3">
+                <label>Description</label>
+                <input class="form-control" name="set_description" id="description">
+            </div>
+            <div class="mb-3">
+                <label>owner_id</label>
+                <input class="form-control" name="set_user_id" id="user_id">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Submit">
+       </form>
+    </div>
     <table id="item-list" class="table" style="width:100%">
                 <thead>
                     <tr>
