@@ -25,24 +25,29 @@
        </form>
     </div>
     <table id="item-list" class="table" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>title</th>
-                        <th>description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in item_list %}
-    <!--                    [{"title":"title1","description":"exyyy","id":1,"owner_id":1}]-->
-                    <tr>
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.title }}</td>
-                        <td>{{ item.description }}</td>
-                    </tr>
-                    {% endfor %}
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>title</th>
+                <th>description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in item_list %}
+<!--                    [{"title":"title1","description":"exyyy","id":1,"owner_id":1}]-->
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+            </tr>
+            {% endfor %}
 
-                </tbody>
-            </table>
+        </tbody>
+    </table>
+    <input class="btn btn-primary" type="submit" value="Submit">
+    <div style="padding: 20px;">Generate JSON</div>
+    <form action="/items/download/" enctype="multipart/form-data" method="get">
+        <input class="btn btn-primary" type="submit" value="Generate">
+    </form>
 </body>
 </html>
