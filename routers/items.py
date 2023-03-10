@@ -12,7 +12,7 @@ from starlette import status
 from starlette.responses import RedirectResponse, FileResponse
 from starlette.background import BackgroundTask
 
-from db import crud
+from db.crud.items import get_items, create_user_item
 from db.database import get_db
 from db.schemas.items import Item, ItemCreate
 from dependencies import templates
@@ -23,7 +23,7 @@ router = APIRouter()
 
 @router.get("/", response_model=List[Item])
 def read_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
+    items = get_items(db, skip=skip, limit=limit)
     # return items
     new_item = ItemCreate
     return templates.TemplateResponse("items.html",{"request": request, "item_list": items, "new_item": new_item})
@@ -45,27 +45,21 @@ async def create_item(
             title=set_title,
             description=set_description
         )
-    crud.create_user_item(db=db, item=new_item, user_id=set_user_id)
+    create_user_item(db=db, item=new_item, user_id=set_user_id)
 
     response = RedirectResponse('/items', status_code=status.HTTP_302_FOUND)
     return response
 
 @router.get("/download", response_model=List[Item])
 def download_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    # print(dir(items))
+    items = get_items(db, skip=skip, limit=limit)
     item_list = model_list(items)
-    print(item_list)
 
     file_content = str(item_list)
     basedir = os.path.abspath(os.path.dirname(__file__))
-    print(basedir)
-    print(basedir.find('demo_fastapi'), len('demo_fastapi'))
     rootPath = basedir[:basedir.find('demo_fastapi')+len('demo_fastapi')]
-    print(rootPath)
 
     file_path = os.path.join(rootPath, 'temp', 'test.txt')
-    print(file_path)
     with open(file_path, 'w') as f:
         f.write(file_content)
     return FileResponse(file_path, media_type='text/plain', filename='test.txt',background=BackgroundTask(lambda: os.remove(file_path)))
