@@ -15,7 +15,7 @@ from db import schemas, crud, models
 from db.database import get_db
 from db.schemas import ItemBase
 from dependencies import templates
-from lib.utilsJson import objetc_to_json
+from lib.utilsJson import objetc_to_json, model_list
 from logs.logger import logger
 
 router = APIRouter()
@@ -50,22 +50,23 @@ async def create_item(
     return response
 
 @router.get("/download", response_model=List[schemas.Item])
-def read_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def download_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
+    # print(dir(items))
+    item_list = model_list(items)
+    print(item_list)
 
-    item_list = []
-    for item in items:
-        print(item.__dict__)
-
-        item_list.append(item.__dict__)
-    # file_content = objetc_to_json(items)
+    file_content = str(item_list)
     basedir = os.path.abspath(os.path.dirname(__file__))
+    print(basedir)
+    print(basedir.find('demo_fastapi'), len('demo_fastapi'))
     rootPath = basedir[:basedir.find('demo_fastapi')+len('demo_fastapi')]
+    print(rootPath)
 
     file_path = os.path.join(rootPath, 'temp', 'test.txt')
     print(file_path)
     with open(file_path, 'w') as f:
-        f.write(str(item_list))
+        f.write(file_content)
     return FileResponse(file_path, media_type='text/plain', filename='test.txt',background=BackgroundTask(lambda: os.remove(file_path)))
 
 

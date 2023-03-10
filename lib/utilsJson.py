@@ -21,6 +21,16 @@ def objetc_to_json(object_input):
     result = json.dumps(object_input,ensure_ascii = False)
     return result
 
+def model_list(result):
+    list = []
+    for row in result:
+        dict = {}
+        for k,v in row.__dict__.items():
+            if not k.startswith('_sa_instance_state'):
+                dict[k] = v
+        list.append(dict)
+    return list
+
 if __name__ == '__main__':
     dict_input = {"name": "zhangsan", "age": 18}
     json_output = dict_to_json(dict_input)
