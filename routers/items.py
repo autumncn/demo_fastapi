@@ -26,12 +26,12 @@ def read_items(request: Request, skip: int = 0, limit: int = 100, db: Session = 
     items = get_items(db, skip=skip, limit=limit)
     # return items
     new_item = ItemCreate
-    return templates.TemplateResponse("items.html",{"request": request, "item_list": items, "new_item": new_item})
+    return templates.TemplateResponse("view/items.html",{"request": request, "item_list": items, "new_item": new_item})
 
 
 @router.get("/id={id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
-    return templates.TemplateResponse("item_view.html", {"request": request, "id": id})
+    return templates.TemplateResponse("view/item_view.html", {"request": request, "id": id})
 
 @router.post("/create", response_model=Item)
 async def create_item(
@@ -40,7 +40,7 @@ async def create_item(
     set_description: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    print(set_user_id, set_title, set_description)
+    # print(set_user_id, set_title, set_description)
     new_item = ItemCreate(
             title=set_title,
             description=set_description

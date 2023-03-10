@@ -1,0 +1,55 @@
+{% extends "shared/base.html" %}
+
+
+{% block title %}
+<title>Items</title>
+{% endblock %}
+
+{% block content %}
+<div class="row g-3" style="padding:100px; padding-bottom: 10px;">
+    <form action="/items/create" enctype="application/x-www-form-urlencoded" method="POST">
+        <div class="mb-3">
+            <label>Title</label>
+            <input class="form-control" name="set_title" id="title" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+            <label>Description</label>
+            <input class="form-control" name="set_description" id="description">
+        </div>
+        <div class="mb-3">
+            <label>owner_id</label>
+            <input class="form-control" name="set_user_id" id="user_id">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+</div>
+<div class="row g-3" style="padding:100px; padding-bottom: 10px;">
+    <table id="item-list" class="table" style="width:100%">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in item_list %}
+        <!--                    [{"title":"title1","description":"exyyy","id":1,"owner_id":1}]-->
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.description }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="row g-3" style="padding:100px; padding-bottom: 10px;">
+    <div style="padding: 20px;">Generate JSON</div>
+    <div class="row g-3">
+        <form action="/items/download/" enctype="multipart/form-data" method="get">
+            <input class="btn btn-primary" type="submit" value="Generate">
+        </form>
+    </div>
+</div>
+{% endblock %}

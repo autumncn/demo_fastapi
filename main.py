@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-# import routers.items as items
+# import view.items as items
 from routers import items, users, home, login
 
 app = FastAPI()

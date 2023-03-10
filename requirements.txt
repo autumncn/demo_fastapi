@@ -12,14 +12,14 @@ sqlalchemy
 #psycopg2
 
 #for loading environment variables  #new
-python-dotenv
+#python-dotenv
 
 #for email validation            #new
-'pydantic[email]'
+pydantic[email]
 email_validator
 
 #hashing              #new
-'passlib[bcrypt]'
+passlib[bcrypt]
 
 #for creating jwt tokens
 python-jose

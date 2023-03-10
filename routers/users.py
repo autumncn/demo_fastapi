@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from db.crud.items import create_user_item
-from db.crud.users import get_user, create_user, get_user_by_email
+from db.crud.users import get_user, create_user, get_user_by_email, get_users
 from db.database import get_db
 from db.schemas.items import ItemCreate, Item
 from db.schemas.users import UserCreate, User
