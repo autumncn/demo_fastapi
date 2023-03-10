@@ -2,6 +2,7 @@ import datetime
 import os
 import time
 from typing import List
+
 from fastapi.params import Form
 from fastapi import Request
 from fastapi.responses import HTMLResponse
@@ -11,20 +12,20 @@ from starlette import status
 from starlette.responses import RedirectResponse, FileResponse
 from starlette.background import BackgroundTask
 
-from db import schemas, crud, models
+from db import crud
 from db.database import get_db
-from db.schemas import ItemBase
+from db.schemas.items import Item, ItemCreate
 from dependencies import templates
-from lib.utilsJson import objetc_to_json, model_list
+from lib.utilsJson import model_list
 from logs.logger import logger
 
 router = APIRouter()
 
-@router.get("/", response_model=List[schemas.Item])
+@router.get("/", response_model=List[Item])
 def read_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     # return items
-    new_item = schemas.ItemCreate
+    new_item = ItemCreate
     return templates.TemplateResponse("items.html",{"request": request, "item_list": items, "new_item": new_item})
 
 
@@ -32,7 +33,7 @@ def read_items(request: Request, skip: int = 0, limit: int = 100, db: Session = 
 async def read_item(request: Request, id: str):
     return templates.TemplateResponse("item_view.html", {"request": request, "id": id})
 
-@router.post("/create", response_model=schemas.Item)
+@router.post("/create", response_model=Item)
 async def create_item(
     set_user_id: int = Form(...),
     set_title: str = Form(...),
@@ -40,7 +41,7 @@ async def create_item(
     db: Session = Depends(get_db)
 ):
     print(set_user_id, set_title, set_description)
-    new_item = schemas.ItemCreate(
+    new_item = ItemCreate(
             title=set_title,
             description=set_description
         )
@@ -49,7 +50,7 @@ async def create_item(
     response = RedirectResponse('/items', status_code=status.HTTP_302_FOUND)
     return response
 
-@router.get("/download", response_model=List[schemas.Item])
+@router.get("/download", response_model=List[Item])
 def download_items(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     # print(dir(items))
